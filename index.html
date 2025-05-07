@@ -122,38 +122,44 @@
     function calcular() {
       const idades = document.getElementById('idade').value.split(',').map(x => parseInt(x.trim()));
       const tipoPlano = document.getElementById('tipoPlano').value;
-      const tipoCobertura = document.getElementById('tipoCobertura').value;
 
       let resultado = `*Promoção 15% nas 03 primeiras mensalidades*\n\n`;
-      resultado += `*Plano ${tipoPlano.charAt(0).toUpperCase() + tipoPlano.slice(1)} – ${tipoCobertura.charAt(0).toUpperCase() + tipoCobertura.slice(1)}*\n`;
-      resultado += `\n*Coparticipação total*\n`;
 
-      let totalAntigoTotal = 0;
-      let totalNovoTotal = 0;
-      idades.forEach(idade => {
-        const faixa = faixaEtaria(idade);
-        const antigo = valoresAntigos[tipoPlano][tipoCobertura]['total'][faixa];
-        const novo = valoresNovos[tipoPlano][tipoCobertura]['total'][faixa];
-        resultado += `${idade} anos: De R$ ${antigo.toFixed(2)} Para R$ ${novo.toFixed(2)}\n`;
-        totalAntigoTotal += antigo;
-        totalNovoTotal += novo;
+      ['nosso', 'ambulatorial'].forEach(cobertura => {
+        const tituloCobertura = cobertura === 'nosso' ? 'Nosso plano (completo)' : 'AMBULATORIAL';
+        resultado += `*Plano ${tipoPlano.charAt(0).toUpperCase() + tipoPlano.slice(1)} – ${tituloCobertura}*\n`;
+        resultado += `Ele dá direito a urgência e emergência, consultas, exames, internações e cirurgias em toda rede hapvida (Hapclínicas, laboratórios e Hospitais do Hapvida)\n\n`;
+
+        // Coparticipação total
+        resultado += `**Coparticipação total**\n`;
+        let totalAntigoTotal = 0;
+        let totalNovoTotal = 0;
+        idades.forEach(idade => {
+          const faixa = faixaEtaria(idade);
+          const antigo = valoresAntigos[tipoPlano][cobertura]['total'][faixa];
+          const novo = valoresNovos[tipoPlano][cobertura]['total'][faixa];
+          resultado += `${idade} anos: De R$ ${antigo.toFixed(2)} Para R$ ${novo.toFixed(2)}\n`;
+          totalAntigoTotal += antigo;
+          totalNovoTotal += novo;
+        });
+        resultado += `Total: De R$ ${totalAntigoTotal.toFixed(2)} Para R$ ${totalNovoTotal.toFixed(2)}\n\n`;
+
+        // Coparticipação parcial
+        resultado += `**Coparticipação parcial**\n`;
+        let totalAntigoParcial = 0;
+        let totalNovoParcial = 0;
+        idades.forEach(idade => {
+          const faixa = faixaEtaria(idade);
+          const antigo = valoresAntigos[tipoPlano][cobertura]['parcial'][faixa];
+          const novo = valoresNovos[tipoPlano][cobertura]['parcial'][faixa];
+          resultado += `${idade} anos: De R$ ${antigo.toFixed(2)} Para R$ ${novo.toFixed(2)}\n`;
+          totalAntigoParcial += antigo;
+          totalNovoParcial += novo;
+        });
+        resultado += `Total: De R$ ${totalAntigoParcial.toFixed(2)} Para R$ ${totalNovoParcial.toFixed(2)}\n\n`;
       });
-      resultado += `Total: De R$ ${totalAntigoTotal.toFixed(2)} Para R$ ${totalNovoTotal.toFixed(2)}\n\n`;
 
-      resultado += `*Coparticipação parcial*\n`;
-      let totalAntigoParcial = 0;
-      let totalNovoParcial = 0;
-      idades.forEach(idade => {
-        const faixa = faixaEtaria(idade);
-        const antigo = valoresAntigos[tipoPlano][tipoCobertura]['parcial'][faixa];
-        const novo = valoresNovos[tipoPlano][tipoCobertura]['parcial'][faixa];
-        resultado += `${idade} anos: De R$ ${antigo.toFixed(2)} Para R$ ${novo.toFixed(2)}\n`;
-        totalAntigoParcial += antigo;
-        totalNovoParcial += novo;
-      });
-      resultado += `Total: De R$ ${totalAntigoParcial.toFixed(2)} Para R$ ${totalNovoParcial.toFixed(2)}`;
-
-      document.getElementById('resultado').innerText = resultado;
+      document.getElementById('resultado').innerText = resultado.trim();
     }
 
     function copiarResultado() {
