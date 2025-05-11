@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Cartelas de Bingo</title>
+  <title>Cartelas de Bingo Editáveis</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -25,6 +25,7 @@
       text-align: center;
       font-weight: bold;
       margin-bottom: 10px;
+      cursor: pointer;
     }
     .linha {
       display: flex;
@@ -40,10 +41,25 @@
       border-radius: 5px;
       cursor: pointer;
       transition: background 0.3s;
+      user-select: none;
     }
     .selecionado {
       background: #4CAF50;
       color: white;
+    }
+    input.titulo-edit,
+    input.numero-edit {
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 14px;
+      text-align: center;
+    }
+    input.numero-edit {
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      padding: 0;
+      margin: 0;
     }
   </style>
 </head>
@@ -52,15 +68,6 @@
 <div class="cartelas" id="cartelasContainer"></div>
 
 <script>
-  function gerarNumerosUnicos(quantidade, min = 1, max = 90) {
-    const numeros = new Set();
-    while (numeros.size < quantidade) {
-      const num = Math.floor(Math.random() * (max - min + 1)) + min;
-      numeros.add(num);
-    }
-    return Array.from(numeros).sort((a, b) => a - b);
-  }
-
   function criarCartela(indice) {
     const cartela = document.createElement('div');
     cartela.className = 'cartela';
@@ -68,20 +75,53 @@
     const titulo = document.createElement('div');
     titulo.className = 'titulo';
     titulo.textContent = `Sorteio ${indice}`;
+    titulo.addEventListener('click', () => {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = titulo.textContent;
+      input.className = 'titulo-edit';
+      input.addEventListener('blur', () => {
+        titulo.textContent = input.value || `Sorteio ${indice}`;
+        titulo.style.display = 'block';
+      });
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') input.blur();
+      });
+      titulo.replaceWith(input);
+      input.focus();
+    });
     cartela.appendChild(titulo);
 
-    const numeros = gerarNumerosUnicos(15);
     for (let i = 0; i < 3; i++) {
       const linha = document.createElement('div');
       linha.className = 'linha';
       for (let j = 0; j < 5; j++) {
         const numero = document.createElement('div');
         numero.className = 'numero';
-        const valor = numeros[i * 5 + j];
+        const valor = Math.floor(Math.random() * 90) + 1;
         numero.textContent = valor;
+
         numero.addEventListener('click', () => {
           numero.classList.toggle('selecionado');
         });
+
+        numero.addEventListener('dblclick', () => {
+          const input = document.createElement('input');
+          input.type = 'number';
+          input.value = numero.textContent;
+          input.className = 'numero-edit';
+          input.addEventListener('blur', () => {
+            const val = parseInt(input.value);
+            numero.textContent = isNaN(val) ? '' : val;
+            numero.style.display = 'block';
+          });
+          input.addEventListener('keydown', e => {
+            if (e.key === 'Enter') input.blur();
+          });
+          numero.replaceWith(input);
+          input.focus();
+        });
+
         linha.appendChild(numero);
       }
       cartela.appendChild(linha);
