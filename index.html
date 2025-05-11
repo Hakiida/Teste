@@ -1,173 +1,101 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calculadora de Planos Hapvida</title>
+  <meta charset="UTF-8">
+  <title>Cartelas de Bingo</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #001f3f;
-      color: white;
       padding: 20px;
+      background: #f2f2f2;
     }
-    h1 {
-      text-align: center;
-      color: white;
+    .cartelas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
     }
-    h2 {
-      text-align: center;
-      color: orange;
-      margin-top: -10px;
-    }
-    label, select, input, button {
-      display: block;
-      margin: 10px auto;
-      font-size: 1rem;
-    }
-    #resultado {
+    .cartela {
       background: white;
-      color: black;
-      padding: 20px;
-      margin-top: 20px;
-      white-space: pre-line;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 10px;
+      width: 200px;
     }
-    .copiar {
-      margin-top: 10px;
+    .titulo {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .linha {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+    .numero {
+      width: 30px;
+      height: 30px;
+      background: #ddd;
+      text-align: center;
+      line-height: 30px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .selecionado {
+      background: #4CAF50;
+      color: white;
     }
   </style>
 </head>
 <body>
-  <h1>Calculadora de Planos Hapvida</h1>
-  <h2>EQUIPE ALPHA A MELHOR</h2>
-  <label for="idade">Digite as idades (separadas por vírgula):</label>
-  <input type="text" id="idade" placeholder="Ex: 23,54,31" />
 
-  <label for="tipoPlano">Tipo de plano:</label>
-  <select id="tipoPlano">
-    <option value="individual">Plano Individual</option>
-    <option value="empresarial">Plano Empresarial</option>
-  </select>
+<div class="cartelas" id="cartelasContainer"></div>
 
-  <label for="tipoCobertura">Tipo de cobertura:</label>
-  <select id="tipoCobertura">
-    <option value="nosso">Nosso plano</option>
-    <option value="ambulatorial">Ambulatorial</option>
-  </select>
-
-  <button onclick="calcular()">Calcular</button>
-  <div id="resultado"></div>
-  <button class="copiar" onclick="copiarResultado()">Copiar Resultado</button>
-
-  <script>
-    const valoresAntigos = {
-      empresarial: {
-        nosso: {
-          total: [137.08, 153.53, 171.95, 197.74, 227.40, 270.61, 338.26, 422.82, 718.81, 805.07],
-          parcial: [175.39, 196.44, 220.01, 253.01, 290.96, 346.24, 432.80, 541.00, 919.70, 1030.06]
-        },
-        ambulatorial: {
-          total: [96.03, 107.55, 120.46, 138.53, 159.31, 189.58, 236.98, 296.23, 503.59, 564.02],
-          parcial: [130.03, 145.63, 163.11, 187.58, 215.72, 256.71, 320.89, 401.11, 681.89, 763.72]
-        }
-      },
-      individual: {
-        nosso: {
-          total: [179.77, 229.75, 260.67, 289.12, 302.40, 338.65, 407.96, 554.02, 739.67, 954.49],
-          parcial: [218.82, 281.29, 319.95, 355.51, 372.11, 417.42, 504.06, 686.64, 918.71, 1187.25]
-        },
-        ambulatorial: {
-          total: [117.31, 154.00, 175.34, 195.42, 205.58, 230.61, 281.66, 390.06, 525.28, 681.75],
-          parcial: [182.56, 240.33, 273.93, 305.55, 321.55, 360.96, 441.34, 612.02, 824.93, 1071.30]
-        }
-      }
-    };
-
-    const valoresNovos = {
-      empresarial: {
-        nosso: {
-          total: [116.52, 130.50, 146.164, 168.08, 193.29, 230.02, 287.52, 359.41, 610.99, 684.31],
-          parcial: [149.08, 166.97, 187.01, 215.06, 247.32, 294.30, 367.88, 459.85, 781.75, 875.55]
-        },
-        ambulatorial: {
-          total: [81.63, 91.42, 102.39, 117.75, 135.41, 161.14, 201.43, 251.80, 428.05, 479.42],
-          parcial: [110.53, 123.79, 138.64, 159.44, 183.36, 218.20, 272.76, 340.94, 579.61, 649.16]
-        }
-      },
-      individual: {
-        nosso: {
-          total: [152.80, 195.29, 221.57, 245.75, 257.04, 287.85, 346.77, 470.92, 628.72, 811.32],
-          parcial: [186.00, 239.10, 271.96, 302.18, 316.29, 354.81, 428.45, 583.64, 780.90, 1009.16]
-        },
-        ambulatorial: {
-          total: [99.71, 130.90, 149.04, 166.11, 174.74, 196.02, 239.4, 331.55, 446.49, 579.49],
-          parcial: [155.18, 204.28, 232.84, 259.72, 273.32, 306.82, 375.14, 520.22, 701.19, 910.61]
-        }
-      }
-    };
-
-    function faixaEtaria(idade) {
-      if (idade <= 18) return 0;
-      if (idade <= 23) return 1;
-      if (idade <= 28) return 2;
-      if (idade <= 33) return 3;
-      if (idade <= 38) return 4;
-      if (idade <= 43) return 5;
-      if (idade <= 48) return 6;
-      if (idade <= 53) return 7;
-      if (idade <= 58) return 8;
-      return 9;
+<script>
+  function gerarNumerosUnicos(quantidade, min = 1, max = 90) {
+    const numeros = new Set();
+    while (numeros.size < quantidade) {
+      const num = Math.floor(Math.random() * (max - min + 1)) + min;
+      numeros.add(num);
     }
+    return Array.from(numeros).sort((a, b) => a - b);
+  }
 
-    function calcular() {
-      const idades = document.getElementById('idade').value.split(',').map(x => parseInt(x.trim()));
-      const tipoPlano = document.getElementById('tipoPlano').value;
+  function criarCartela(indice) {
+    const cartela = document.createElement('div');
+    cartela.className = 'cartela';
 
-      let resultado = `*Promoção 15% nas 03 primeiras mensalidades*\n\n`;
+    const titulo = document.createElement('div');
+    titulo.className = 'titulo';
+    titulo.textContent = `Sorteio ${indice}`;
+    cartela.appendChild(titulo);
 
-      ['nosso', 'ambulatorial'].forEach(cobertura => {
-        const tituloCobertura = cobertura === 'nosso' ? 'Nosso plano (completo)' : 'AMBULATORIAL';
-        resultado += `*Plano ${tipoPlano.charAt(0).toUpperCase() + tipoPlano.slice(1)} – ${tituloCobertura}*\n`;
-        resultado += `Ele dá direito a urgência e emergência, consultas, exames, internações e cirurgias em toda rede hapvida (Hapclínicas, laboratórios e Hospitais do Hapvida)\n\n`;
-
-        // Coparticipação total
-        resultado += `**Coparticipação total**\n`;
-        let totalAntigoTotal = 0;
-        let totalNovoTotal = 0;
-        idades.forEach(idade => {
-          const faixa = faixaEtaria(idade);
-          const antigo = valoresAntigos[tipoPlano][cobertura]['total'][faixa];
-          const novo = valoresNovos[tipoPlano][cobertura]['total'][faixa];
-          resultado += `${idade} anos: De R$ ${antigo.toFixed(2)} Para R$ ${novo.toFixed(2)}\n`;
-          totalAntigoTotal += antigo;
-          totalNovoTotal += novo;
+    const numeros = gerarNumerosUnicos(15);
+    for (let i = 0; i < 3; i++) {
+      const linha = document.createElement('div');
+      linha.className = 'linha';
+      for (let j = 0; j < 5; j++) {
+        const numero = document.createElement('div');
+        numero.className = 'numero';
+        const valor = numeros[i * 5 + j];
+        numero.textContent = valor;
+        numero.addEventListener('click', () => {
+          numero.classList.toggle('selecionado');
         });
-        resultado += `Total: De R$ ${totalAntigoTotal.toFixed(2)} Para R$ ${totalNovoTotal.toFixed(2)}\n\n`;
-
-        // Coparticipação parcial
-        resultado += `**Coparticipação parcial**\n`;
-        let totalAntigoParcial = 0;
-        let totalNovoParcial = 0;
-        idades.forEach(idade => {
-          const faixa = faixaEtaria(idade);
-          const antigo = valoresAntigos[tipoPlano][cobertura]['parcial'][faixa];
-          const novo = valoresNovos[tipoPlano][cobertura]['parcial'][faixa];
-          resultado += `${idade} anos: De R$ ${antigo.toFixed(2)} Para R$ ${novo.toFixed(2)}\n`;
-          totalAntigoParcial += antigo;
-          totalNovoParcial += novo;
-        });
-        resultado += `Total: De R$ ${totalAntigoParcial.toFixed(2)} Para R$ ${totalNovoParcial.toFixed(2)}\n\n`;
-      });
-
-      document.getElementById('resultado').innerText = resultado.trim();
+        linha.appendChild(numero);
+      }
+      cartela.appendChild(linha);
     }
 
-    function copiarResultado() {
-      const resultado = document.getElementById('resultado').innerText;
-      navigator.clipboard.writeText(resultado).then(() => {
-        alert("Resultado copiado com sucesso!");
-      });
-    }
-  </script>
+    return cartela;
+  }
+
+  const container = document.getElementById('cartelasContainer');
+  for (let i = 1; i <= 4; i++) {
+    const cartela = criarCartela(i);
+    container.appendChild(cartela);
+  }
+</script>
+
 </body>
 </html>
