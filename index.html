@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Cartelas de Bingo Editáveis</title>
+  <title>Cartelas de Bingo Personalizadas</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -68,20 +68,39 @@
 <div class="cartelas" id="cartelasContainer"></div>
 
 <script>
-  function criarCartela(indice) {
+  const cartelasInfo = [
+    {
+      titulo: "Sorteio 1: 202054",
+      numeros: [1, 4, 3, 8, 11, 17, 21, 23, 29, 30, 35, 36, 39, 42, 46]
+    },
+    {
+      titulo: "Sorteio 2: 452034",
+      numeros: [1, 5, 12, 13, 14, 25, 27, 28, 30, 35, 36, 38, 39, 42, 49]
+    },
+    {
+      titulo: "Sorteio 3: 702034",
+      numeros: [2, 3, 6, 7, 16, 19, 20, 28, 31, 33, 37, 42, 46, 47, 50]
+    },
+    {
+      titulo: "Sorteio 4: 952054",
+      numeros: [2, 6, 9, 10, 11, 15, 21, 29, 30, 32, 34, 35, 38, 42, 43]
+    }
+  ];
+
+  function criarCartela(info) {
     const cartela = document.createElement('div');
     cartela.className = 'cartela';
 
     const titulo = document.createElement('div');
     titulo.className = 'titulo';
-    titulo.textContent = `Sorteio ${indice}`;
+    titulo.textContent = info.titulo;
     titulo.addEventListener('click', () => {
       const input = document.createElement('input');
       input.type = 'text';
       input.value = titulo.textContent;
       input.className = 'titulo-edit';
       input.addEventListener('blur', () => {
-        titulo.textContent = input.value || `Sorteio ${indice}`;
+        titulo.textContent = input.value || info.titulo;
         titulo.style.display = 'block';
       });
       input.addEventListener('keydown', e => {
@@ -98,7 +117,7 @@
       for (let j = 0; j < 5; j++) {
         const numero = document.createElement('div');
         numero.className = 'numero';
-        const valor = Math.floor(Math.random() * 90) + 1;
+        const valor = info.numeros[i * 5 + j];
         numero.textContent = valor;
 
         numero.addEventListener('click', () => {
@@ -131,10 +150,10 @@
   }
 
   const container = document.getElementById('cartelasContainer');
-  for (let i = 1; i <= 4; i++) {
-    const cartela = criarCartela(i);
+  cartelasInfo.forEach(info => {
+    const cartela = criarCartela(info);
     container.appendChild(cartela);
-  }
+  });
 </script>
 
 </body>
