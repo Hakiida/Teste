@@ -162,10 +162,16 @@
     };
 
     function faixaEtaria(idade) {
-      for (let i = faixas.length - 1; i >= 0; i--) {
-        if (idade >= faixas[i]) return i;
-      }
-      return 0;
+      if (idade <= 18) return 0;
+      if (idade <= 23) return 1;
+      if (idade <= 28) return 2;
+      if (idade <= 33) return 3;
+      if (idade <= 38) return 4;
+      if (idade <= 43) return 5;
+      if (idade <= 48) return 6;
+      if (idade <= 53) return 7;
+      if (idade <= 58) return 8;
+      return 9;
     }
 
     function calcularValores() {
