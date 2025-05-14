@@ -1,160 +1,214 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Cartelas de Bingo Personalizadas</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contador de Planos</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #f2f2f2;
-    }
-    .cartelas {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-    .cartela {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      padding: 10px;
-      width: 200px;
-    }
-    .titulo {
-      text-align: center;
-      font-weight: bold;
-      margin-bottom: 10px;
-      cursor: pointer;
-    }
-    .linha {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 5px;
-    }
-    .numero {
-      width: 30px;
-      height: 30px;
-      background: #ddd;
-      text-align: center;
-      line-height: 30px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s;
-      user-select: none;
-    }
-    .selecionado {
-      background: #4CAF50;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0a0f2c;
       color: white;
+      padding: 1rem;
     }
-    input.titulo-edit,
-    input.numero-edit {
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0;
+      text-align: center;
+    }
+    h2 {
+      color: orange;
+      font-size: 1.2rem;
+      text-align: center;
+      margin-top: 0;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    select, input[type="text"] {
       width: 100%;
-      box-sizing: border-box;
-      font-size: 14px;
-      text-align: center;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 1rem;
     }
-    input.numero-edit {
-      width: 30px;
-      height: 30px;
-      text-align: center;
-      padding: 0;
-      margin: 0;
+    button {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1rem;
+      background-color: orange;
+      border: none;
+      border-radius: 8px;
+      color: #0a0f2c;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #ff9900;
+    }
+    .result {
+      white-space: pre-wrap;
+      background: #1a1f3d;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-top: 1rem;
     }
   </style>
 </head>
 <body>
+  <h1>Contador de Planos</h1>
+  <h2>Equipe Alpha a melhor</h2>
 
-<div class="cartelas" id="cartelasContainer"></div>
+  <div class="form-group">
+    <label for="tipo">Plano:</label>
+    <select id="tipo">
+      <option value="individual">Individual</option>
+      <option value="empresarial">Empresarial</option>
+    </select>
+  </div>
 
-<script>
-  const cartelasInfo = [
-    {
-      titulo: "Sorteio 1: 202054",
-      numeros: [1, 4, 3, 8, 11, 17, 21, 23, 29, 30, 35, 36, 39, 42, 46]
-    },
-    {
-      titulo: "Sorteio 2: 452034",
-      numeros: [1, 5, 12, 13, 14, 25, 27, 28, 30, 35, 36, 38, 39, 42, 49]
-    },
-    {
-      titulo: "Sorteio 3: 702034",
-      numeros: [2, 3, 6, 7, 16, 19, 20, 28, 31, 33, 37, 42, 46, 47, 50]
-    },
-    {
-      titulo: "Sorteio 4: 952054",
-      numeros: [2, 6, 9, 10, 11, 15, 21, 29, 30, 32, 34, 35, 38, 42, 43]
-    }
-  ];
+  <div class="form-group">
+    <label for="cobertura">Cobertura:</label>
+    <select id="cobertura">
+      <option value="nosso">Nosso Plano</option>
+      <option value="ambulatorial">Ambulatorial</option>
+    </select>
+  </div>
 
-  function criarCartela(info) {
-    const cartela = document.createElement('div');
-    cartela.className = 'cartela';
+  <div class="form-group">
+    <label for="categoria">Categoria:</label>
+    <select id="categoria">
+      <option value="Parcial">Coparticipação Parcial</option>
+      <option value="Total">Coparticipação Total</option>
+      <option value="ambos">Ambos</option>
+    </select>
+  </div>
 
-    const titulo = document.createElement('div');
-    titulo.className = 'titulo';
-    titulo.textContent = info.titulo;
-    titulo.addEventListener('click', () => {
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.value = titulo.textContent;
-      input.className = 'titulo-edit';
-      input.addEventListener('blur', () => {
-        titulo.textContent = input.value || info.titulo;
-        titulo.style.display = 'block';
-      });
-      input.addEventListener('keydown', e => {
-        if (e.key === 'Enter') input.blur();
-      });
-      titulo.replaceWith(input);
-      input.focus();
-    });
-    cartela.appendChild(titulo);
+  <div class="form-group">
+    <label for="idades">Idades (separadas por vírgula):</label>
+    <input type="text" id="idades" placeholder="Ex: 02, 35, 45">
+  </div>
 
-    for (let i = 0; i < 3; i++) {
-      const linha = document.createElement('div');
-      linha.className = 'linha';
-      for (let j = 0; j < 5; j++) {
-        const numero = document.createElement('div');
-        numero.className = 'numero';
-        const valor = info.numeros[i * 5 + j];
-        numero.textContent = valor;
+  <button onclick="calcularValores()">Calcular</button>
+  <button onclick="copiarResultado()">Copiar Resultado</button>
 
-        numero.addEventListener('click', () => {
-          numero.classList.toggle('selecionado');
-        });
+  <div id="resultado" class="result"></div>
 
-        numero.addEventListener('dblclick', () => {
-          const input = document.createElement('input');
-          input.type = 'number';
-          input.value = numero.textContent;
-          input.className = 'numero-edit';
-          input.addEventListener('blur', () => {
-            const val = parseInt(input.value);
-            numero.textContent = isNaN(val) ? '' : val;
-            numero.style.display = 'block';
-          });
-          input.addEventListener('keydown', e => {
-            if (e.key === 'Enter') input.blur();
-          });
-          numero.replaceWith(input);
-          input.focus();
-        });
+  <script>
+    const faixas = [0, 18, 23, 28, 33, 38, 43, 48, 53, 59];
 
-        linha.appendChild(numero);
+    const textos = {
+      nosso: {
+        individual: `✅Urgência e emergência<br>✅Consultas médicas<br>✅Exames simples e complexos<br>✅Internações e Cirurgias<br>✅Odontologia Completa`,
+        empresarial: `✅Urgência e emergência<br>✅Consultas médicas<br>✅Exames simples e complexos<br>✅Odontologia opcional`
+      },
+      ambulatorial: {
+        individual: `✅Urgência e emergência<br>✅Consultas médicas<br>✅Exames simples e complexos<br>✅Odonto de Emergencia`,
+        empresarial: `✅Urgência e emergência<br>✅Consultas médicas<br>✅Exames simples e complexos<br>✅Odontologia opcional`
       }
-      cartela.appendChild(linha);
+    };
+
+    const valoresAntigos = {
+      empresarial: {
+        nosso: {
+          Total: [137.08, 153.53, 171.95, 197.74, 227.40, 270.61, 338.26, 422.82, 718.81, 805.07],
+          Parcial: [175.39, 196.44, 220.01, 253.01, 290.96, 346.24, 432.80, 541.00, 919.70, 1030.06]
+        },
+        ambulatorial: {
+          Total: [96.03, 107.55, 120.46, 138.53, 159.31, 189.58, 236.98, 296.23, 503.59, 564.02],
+          Parcial: [130.03, 145.63, 163.11, 187.58, 215.72, 256.71, 320.89, 401.11, 681.89, 763.72]
+        }
+      },
+      individual: {
+        nosso: {
+          Total: [179.77, 229.75, 260.67, 289.12, 302.40, 338.65, 407.96, 554.02, 739.67, 954.49],
+          Parcial: [218.82, 281.29, 319.95, 355.51, 372.11, 417.42, 504.06, 686.64, 918.71, 1187.25]
+        },
+        ambulatorial: {
+          Total: [117.31, 154.00, 175.34, 195.42, 205.58, 230.61, 281.66, 390.06, 525.28, 681.75],
+          Parcial: [182.56, 240.33, 273.93, 305.55, 321.55, 360.96, 441.34, 612.02, 824.93, 1071.30]
+        }
+      }
+    };
+
+    const valoresNovos = {
+      empresarial: {
+        nosso: {
+          Total: [116.52, 130.50, 146.164, 168.08, 193.29, 230.02, 287.52, 359.41, 610.99, 684.31],
+          Parcial: [149.08, 166.97, 187.01, 215.06, 247.32, 294.30, 367.88, 459.85, 781.75, 875.55]
+        },
+        ambulatorial: {
+          Total: [81.63, 91.42, 102.39, 117.75, 135.41, 161.14, 201.43, 251.80, 428.05, 479.42],
+          Parcial: [110.53, 123.79, 138.64, 159.44, 183.36, 218.20, 272.76, 340.94, 579.61, 649.16]
+        }
+      },
+      individual: {
+        nosso: {
+          Total: [152.80, 195.29, 221.57, 245.75, 257.04, 287.85, 346.77, 470.92, 628.72, 811.32],
+          Parcial: [186.00, 239.10, 271.96, 302.18, 316.29, 354.81, 428.45, 583.64, 780.90, 1009.16]
+        },
+        ambulatorial: {
+          Total: [99.71, 130.90, 149.04, 166.11, 174.74, 196.02, 239.4, 331.55, 446.49, 579.49],
+          Parcial: [155.18, 204.28, 232.84, 259.72, 273.32, 306.82, 375.14, 520.22, 701.19, 910.61]
+        }
+      }
+    };
+
+    function faixaEtaria(idade) {
+      for (let i = faixas.length - 1; i >= 0; i--) {
+        if (idade >= faixas[i]) return i;
+      }
+      return 0;
     }
 
-    return cartela;
-  }
+    function calcularValores() {
+      const plano = document.getElementById('tipo').value;
+      const cobertura = document.getElementById('cobertura').value;
+      const categoria = document.getElementById('categoria').value;
+      const idades = document.getElementById('idades').value.split(',').map(i => parseInt(i.trim()));
 
-  const container = document.getElementById('cartelasContainer');
-  cartelasInfo.forEach(info => {
-    const cartela = criarCartela(info);
-    container.appendChild(cartela);
-  });
-</script>
+      let output = `Plano: ${plano.charAt(0).toUpperCase() + plano.slice(1)} – ${cobertura === 'nosso' ? 'Nosso plano' : 'Ambulatorial'}\n`;
+      output += textos[cobertura][plano] + "\n\n";
 
+      const categorias = categoria === 'ambos' ? ['Total', 'Parcial'] : [categoria];
+
+      categorias.forEach(cat => {
+        output += `*Coparticipação ${categoria}*\n`;
+        let TotalAntigo = 0;
+        idades.forEach(idade => {
+          const faixa = faixaEtaria(idade);
+          const valor = valoresAntigos[plano][cobertura][cat][faixa];
+          TotalAntigo += valor;
+          output += `Idade: ${idade.toString().padStart(2, '0')} R$ ${valor.toFixed(2)}\n`;
+        });
+        output += `Total R$ ${TotalAntigo.toFixed(2)}\n\n`;
+
+        output += `*Com Promoção de 15% nas 03 Primeiras Parcelas*\n`;
+        let TotalNovo = 0;
+        idades.forEach(idade => {
+          const faixa = faixaEtaria(idade);
+          const valor = valoresNovos[plano][cobertura][cat][faixa];
+          TotalNovo += valor;
+          output += `Idade: ${idade.toString().padStart(2, '0')} R$ ${valor.toFixed(2)}\n`;
+        });
+        output += `Total R$ ${TotalNovo.toFixed(2)}\n\n`;
+      });
+
+      document.getElementById('resultado').innerHTML = output;
+    }
+
+    function copiarResultado() {
+      const texto = document.getElementById('resultado').innerText;
+      navigator.clipboard.writeText(texto);
+      alert("Resultado copiado!");
+    }
+  </script>
 </body>
 </html>
