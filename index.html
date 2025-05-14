@@ -107,7 +107,7 @@
     const textos = {
       nosso: {
         individual: `✅Urgência e emergência<br>✅Consultas médicas<br>✅Exames simples e complexos<br>✅Internações e Cirurgias<br>✅Odontologia Completa`,
-        empresarial: `✅Urgência e emergência<br>✅Consultas médicas<br>✅Exames simples e complexos<br>✅Odontologia opcional`
+        empresarial: `✅Urgência e emergência<br>✅Consultas médicas<br>✅Exames simples e complexos<br>✅Internações e Cirurgias<br>✅Odontologia opcional`
       },
       ambulatorial: {
         individual: `✅Urgência e emergência<br>✅Consultas médicas<br>✅Exames simples e complexos<br>✅Odonto de Emergencia`,
@@ -179,8 +179,7 @@
 
       const categorias = categoria === 'ambos' ? ['Total', 'Parcial'] : [categoria];
 
-      categorias.forEach(cat => {
-        output += `*Coparticipação ${categoria}*\n`;
+        categorias.forEach(cat => {   const labelCategoria = cat === 'Total' ? 'Coparticipação total' :                          cat === 'Parcial' ? 'Coparticipação parcial' : 'Coparticipação';   output += `*${labelCategoria}*\n`;
         let TotalAntigo = 0;
         idades.forEach(idade => {
           const faixa = faixaEtaria(idade);
